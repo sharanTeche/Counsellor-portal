@@ -1,0 +1,77 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Enquiry Screen</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+    <div class="row">
+        <!-- Form on the left side (takes 4 columns) -->
+        <div class="col-md-5">
+            <h3 class="mb-4">Enquiry Here</h3>
+
+            <!-- Display error message if present -->
+            <div th:if="${emsg}" class="alert alert-danger" th:text="${emsg}"></div>
+
+            <div th:if="${smsg}" class="alert alert-success" th:text="${smsg}"></div>
+
+            <form th:action="@{/save}" th:object="${enquiries}" method="post">
+                <div class="mb-3" row>
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" th:field="*{name}" class="form-control" id="name" placeholder="Name">
+                    <input type = "hidden" th:field="*{enqId}" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="phno" class="form-label">Phone</label>
+                    <input type="text" th:field="*{phno}" class="form-control" id="phno" placeholder="Phone number">
+                </div>
+
+                <div class="mb-3">
+                    <label for="classMode" class="form-label">Class Mode</label>
+                    <select th:field="*{classMode}" class="form-select" id="classMode">
+                        <option value="" disabled selected>Select mode</option>
+                        <option value="Online">Online</option>
+                        <option value="Offline">Offline</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="courceName" class="form-label">Course</label>
+                    <select th:field="*{courceName}" class="form-select" id="courceName">
+                        <option value="" disabled selected>Select course</option>
+                        <option value="Java">Java</option>
+                        <option value="JRTP">JRTP</option>
+                        <option value="SBMS">SBMS</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="enqStatus" class="form-label">Status</label>
+                    <select th:field="*{enqStatus}" class="form-select" id="enqStatus">
+                        <option value="" disabled selected>Select status</option>
+                        <option value="Open">Open</option>
+                        <option value="Enrolled">Enrolled</option>
+                        <option value="Lost">Lost</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-success">Save</button>
+                <a href="/view" class="btn btn-link">View All Enquiries</a>
+            </form>
+        </div>
+
+        <!-- Optional: Right column for spacing or additional content -->
+        <div class="col-md-7">
+            <!-- You can place an image or info panel here if needed -->
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
