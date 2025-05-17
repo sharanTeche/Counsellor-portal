@@ -1,8 +1,6 @@
 package com.ashokit.service;
 
 import com.ashokit.dto.CounsellorsDto;
-import com.ashokit.entity.Counsellors;
-import org.springframework.stereotype.Service;
 
 
 public interface CounsellorService {

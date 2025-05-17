@@ -2,7 +2,6 @@ package com.ashokit.service;
 
 import com.ashokit.dto.DashboardDto;
 import com.ashokit.dto.EnquiryDto;
-import com.ashokit.entity.Enquiry;
 
 import java.util.List;
 

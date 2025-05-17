@@ -2,16 +2,19 @@ package com.ashokit.controller;
 
 import com.ashokit.dto.CounsellorsDto;
 import com.ashokit.dto.DashboardDto;
-import com.ashokit.entity.Counsellors;
 import com.ashokit.service.CounsellorService;
 import com.ashokit.service.EnquiryService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import static com.ashokit.constant.AppConstant.ERROR_MSG;
+import static com.ashokit.constant.AppConstant.SUCESS_MSG;
 
 @Controller
 public class CounsellorController {
@@ -28,7 +31,6 @@ public class CounsellorController {
         this.enquiryService = enquiryService;
     }
 
-    //http://localhost:8080/
 
     @GetMapping("/")
     public String index(Model model) {
@@ -48,8 +50,7 @@ public class CounsellorController {
         }
         else {
 
-            model.addAttribute("emsg","Invalid Credentails");
-            //   model.addAttribute("counsellor", dto);
+            model.addAttribute(ERROR_MSG,"Invalid Credentails");
             return "index";
         }
     }
@@ -81,12 +82,12 @@ public class CounsellorController {
       if (emailUnique) {
           boolean register = counsellorService.register(dto);
           if (register) {
-              model.addAttribute("smsg","Resgister sucessfully!!");
+              model.addAttribute(SUCESS_MSG,"Resgister sucessfully!!");
           }else {
-              model.addAttribute("emsg","Failed registration");
+              model.addAttribute(ERROR_MSG,"Failed registration");
           }
       }else {
-          model.addAttribute("emsg","Duplicate email");
+          model.addAttribute(ERROR_MSG,"Duplicate email");
       }
 
       return "registerView";
@@ -98,49 +99,4 @@ public class CounsellorController {
         session.invalidate();
         return "redirect:/";
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  /*  @PostMapping("/login")
-    public CounsellorsDto login(@RequestParam String email, @RequestParam String pwd) {
-        return counsellorService.login(email, pwd);
-    }
-
-
-    @PostMapping("/register")
-    public String  register(@RequestBody CounsellorsDto counsellorsDto) {
-
-        counsellorService.register(counsellorsDto);
-        return "redirect:/login.html";
-
-
-    }
-
-    @GetMapping("/check-email")
-    public ResponseEntity<Boolean> isEmailUnique(@RequestParam String email) {
-        boolean isUnique = counsellorService .isEmailUnique(email);
-        return ResponseEntity.ok(isUnique);
-    }*/
 }

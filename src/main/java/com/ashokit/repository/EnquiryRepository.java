@@ -1,6 +1,5 @@
 package com.ashokit.repository;
 
-import com.ashokit.dto.EnquiryDto;
 import com.ashokit.entity.Enquiry;
 import org.springframework.data.jpa.repository.JpaRepository;
 

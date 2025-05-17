@@ -13,8 +13,6 @@ import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class EnquiryServiceImpl implements EnquiryService {
@@ -51,14 +49,11 @@ public class EnquiryServiceImpl implements EnquiryService {
        List<Enquiry> allEnquiries = repository.findByCounsellorsCounsellorId(counsellorId);
        int total = allEnquiries.size();
 
-       int open =  allEnquiries.stream().filter(e->e.getEnqStatus().equals("Open"))
-                        .collect(Collectors.toList()).size();
+       int open =  allEnquiries.stream().filter(e -> e.getEnqStatus().equals("Open")).toList().size();
 
-        int enrolled =  allEnquiries.stream().filter(e->e.getEnqStatus().equals("Enrolled"))
-                .collect(Collectors.toList()).size();
+        int enrolled =  allEnquiries.stream().filter(e -> e.getEnqStatus().equals("Enrolled")).toList().size();
 
-        int lost =  allEnquiries.stream().filter(e->e.getEnqStatus().equals("Lost"))
-                .collect(Collectors.toList()).size();
+        int lost =  allEnquiries.stream().filter(e -> e.getEnqStatus().equals("Lost")).toList().size();
 
         //Older approche
         DashboardDto dto = new DashboardDto();
@@ -68,20 +63,13 @@ public class EnquiryServiceImpl implements EnquiryService {
         dto.setLostEnqs(lost);
         return dto;
 
-    /*  return   DashboardDto.builder()
-                .totalEnqs(total)
-                .openEnqs(open)
-                .enrolledEnqs(enrolled)
-                .lostEnqs(lost)
-                .build();*/
     }
 
     @Override
     public List<EnquiryDto> getEnquiries(Integer counsellorId) {
 
-        // retrieve enquiries by counsellorId
        List<Enquiry> enquiry = repository.findByCounsellorsCounsellorId(counsellorId);
-        return enquiry.stream().map(enq -> mapToDTO(enq)).collect(Collectors.toList());
+        return enquiry.stream().map(this::mapToDTO).toList();
     }
 
     //edit method
@@ -94,7 +82,6 @@ public class EnquiryServiceImpl implements EnquiryService {
     @Override
     public List<EnquiryDto> filterEnqs(EnquiryDto filterDto, Integer counsellorId) {
 
-        //QBE
 
         Enquiry enquiry = new Enquiry();
 
@@ -115,24 +102,21 @@ public class EnquiryServiceImpl implements EnquiryService {
         enquiry.setCounsellors(counsellor);
 
         List<Enquiry> allenq =  repository.findAll(Example.of(enquiry));
-        return allenq.stream().map(e->mapToDTO(e)).collect(Collectors.toList());
+        return allenq.stream().map(this::mapToDTO).toList();
 
     }
 
     public void deleteEnquiry(Integer enqId) {
-        Optional<Enquiry> existingDto = repository.findById(enqId);
-        Enquiry enquiry = existingDto.get();
-        repository.delete(enquiry);
+        Enquiry existingDto = repository.findById(enqId).orElseThrow();
+        repository.delete(existingDto);
 
     }
 
 
     private EnquiryDto mapToDTO(Enquiry enquiry) {
-        EnquiryDto enquiryDto = modelMapper.map(enquiry, EnquiryDto.class);
-        return enquiryDto;
+       return modelMapper.map(enquiry, EnquiryDto.class);
     }
     private Enquiry mapToEntity(EnquiryDto enquiryDto) {
-        Enquiry enquiry = modelMapper.map(enquiryDto, Enquiry.class);
-        return enquiry;
+        return modelMapper.map(enquiryDto, Enquiry.class);
     }
 }

@@ -1,6 +1,6 @@
 package com.ashokit.dto;
 
-import lombok.*;
+import lombok.Data;
 
 @Data
 public class EnquiryDto {

@@ -29,8 +29,7 @@ public class CounsellorServiceImpl implements CounsellorService {
         Counsellors counsellors = mapToEntity(counsellorsDto);
 
         Counsellors savedEntity = repository.save(counsellors);
-       // return savedEntity.getCounsellorId()!=null;
-        return true;
+        return savedEntity.getCounsellorId()!=null;
     }
 
     @Override
@@ -39,33 +38,21 @@ public class CounsellorServiceImpl implements CounsellorService {
        if (counsellors != null) {
            return mapToDTO(counsellors);
        }
-     //   throw new RuntimeException("Invalid credenatils");
        return null;
     }
 
     @Override
     public boolean isEmailUnique(String email) {
         Optional<Counsellors> byEmail = repository.findByEmail(email);
-        if(byEmail.isPresent()) {
-            return false;
-        }
-        return true;
-
+       return !byEmail.isPresent();
     }
 
 
     private CounsellorsDto mapToDTO(Counsellors counsellors) {
-        CounsellorsDto counsellorsDto = modelMapper.map(counsellors, CounsellorsDto.class);
-        return counsellorsDto;
+       return modelMapper.map(counsellors, CounsellorsDto.class);
     }
 
     private Counsellors mapToEntity(CounsellorsDto counsellorsDto) {
-        Counsellors counsellors = modelMapper.map(counsellorsDto, Counsellors.class);
-       /* Counsellors counsellors = new Counsellors();
-        counsellors.setName(counsellorsDto.getName());
-        counsellors.setEmail(counsellorsDto.getEmail());
-        counsellors.setPwd(counsellorsDto.getPwd());
-        counsellors.setPhno(counsellorsDto.getPhno());*/
-        return counsellors;
+       return modelMapper.map(counsellorsDto, Counsellors.class);
     }
 }
